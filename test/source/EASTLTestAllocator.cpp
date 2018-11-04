@@ -355,7 +355,11 @@
 		void* EASTLAlignedAlloc(size_t size, size_t alignment)
 		{
 		#ifdef EA_PLATFORM_MICROSOFT
+		#ifndef EA_PLATFORM_MINGW
 			return _aligned_malloc(size, alignment);
+		#else
+			return __mingw_aligned_malloc(size, alignment);
+		#endif
 		#else
 			void *p = nullptr;
 			alignment = alignment < sizeof( void *) ? sizeof( void *) : alignment;
@@ -367,7 +371,11 @@
 		void EASTLAlignedFree(void* p)
 		{
 		#ifdef EA_PLATFORM_MICROSOFT
+		#ifndef EA_PLATFORM_MINGW
 			_aligned_free(p);
+		#else
+			__mingw_aligned_free(p);
+		#endif
 		#else
 			free(p);
 		#endif
